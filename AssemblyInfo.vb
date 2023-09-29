@@ -1,4 +1,3 @@
-Imports System
 Imports System.Reflection
 Imports System.Runtime.InteropServices
 
@@ -8,13 +7,13 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("")> 
-<Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("")> 
-<Assembly: AssemblyProduct("")> 
-<Assembly: AssemblyCopyright("")> 
-<Assembly: AssemblyTrademark("")> 
-<Assembly: CLSCompliant(True)> 
+<Assembly: AssemblyTitle("SimpleDyno by Melo Scooter Works")>
+<Assembly: AssemblyDescription("")>
+<Assembly: AssemblyCompany("Melo Scooter Works")>
+<Assembly: AssemblyProduct("")>
+<Assembly: AssemblyCopyright("")>
+<Assembly: AssemblyTrademark("")>
+<Assembly: CLSCompliant(True)>
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
 <Assembly: Guid("DE368931-D843-4320-B6D7-57E51BE6AEC5")>
@@ -29,4 +28,4 @@ Imports System.Runtime.InteropServices
 ' You can specify all the values or you can default the Build and Revision Numbers 
 ' by using the '*' as shown below:
 
-<Assembly: AssemblyVersion("6.5.3")>
+<Assembly: AssemblyVersion("6.5.4")>

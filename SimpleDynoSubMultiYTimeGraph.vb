@@ -378,7 +378,7 @@ Public Class SimpleDynoSubMultiYTimeGraph
         Contextmnu.Items.Add(TestStrip)
 
     End Sub
-  
+
     Public Overrides Sub ControlSpecificOptionSelection(ByVal Sent As String)
 
         Select Case Sent
@@ -402,7 +402,9 @@ Public Class SimpleDynoSubMultiYTimeGraph
     Public Overrides Function ControlSpecificSerializationData() As String
 
 
+#Disable Warning BC42105 ' Function doesn't return a value on all code paths
     End Function
+#Enable Warning BC42105 ' Function doesn't return a value on all code paths
     Public Overrides Sub ControlSpecficCreateFromSerializedData(ByVal Sent As String())
 
     End Sub
@@ -439,5 +441,5 @@ Public Class SimpleDynoSubMultiYTimeGraph
         End With
 
     End Sub
-    
+
 End Class

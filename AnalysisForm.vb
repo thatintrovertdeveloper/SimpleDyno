@@ -1,10 +1,8 @@
-﻿Imports System.IO
+﻿Imports System.Collections.Generic
 Imports System.Drawing.Drawing2D
-Imports System.Collections.Generic
-Imports LiveCharts
-Imports LiveCharts.Wpf
-Imports OxyPlot.Axes
+Imports System.IO
 Imports OxyPlot
+Imports OxyPlot.Axes
 
 Public Class AnalysisForm
     'Overlay Specific
@@ -734,6 +732,8 @@ Public Class AnalysisForm
                            })
 
         If (y1Index < Main.LAST) Then
+#Disable Warning BC42104 ' Variable is used before it has been assigned a value
+#Disable Warning BC42104 ' Variable is used before it has been assigned a value
             plotModel.Axes.Add(New LinearAxis() With {
                                 .Key = "y1",
                                 .Position = OxyPlot.Axes.AxisPosition.Left,
@@ -741,9 +741,13 @@ Public Class AnalysisForm
                                 .MajorGridlineStyle = LineStyle.Solid,
                                 .MajorStep = 1, .Unit = y1AxisUnit
                                 })
+#Enable Warning BC42104 ' Variable is used before it has been assigned a value
+#Enable Warning BC42104 ' Variable is used before it has been assigned a value
         End If
 
         If (y2Index < Main.LAST) Then
+#Disable Warning BC42104 ' Variable is used before it has been assigned a value
+#Disable Warning BC42104 ' Variable is used before it has been assigned a value
             plotModel.Axes.Add(New LinearAxis() With {
                                .Key = "y2",
                                .Position = OxyPlot.Axes.AxisPosition.Right,
@@ -751,9 +755,13 @@ Public Class AnalysisForm
                                .MajorGridlineStyle = LineStyle.Dash,
                                .MajorStep = 1, .Unit = y2AxisUnit
                                })
+#Enable Warning BC42104 ' Variable is used before it has been assigned a value
+#Enable Warning BC42104 ' Variable is used before it has been assigned a value
         End If
 
         If (y3Index < Main.LAST) Then
+#Disable Warning BC42104 ' Variable is used before it has been assigned a value
+#Disable Warning BC42104 ' Variable is used before it has been assigned a value
             plotModel.Axes.Add(New LinearAxis() With {
                            .Key = "y3",
                            .AxisDistance = 50,
@@ -763,9 +771,13 @@ Public Class AnalysisForm
                            .MajorGridlineStyle = LineStyle.Dash,
                            .MajorStep = 1, .Unit = y3AxisUnit
                            })
+#Enable Warning BC42104 ' Variable is used before it has been assigned a value
+#Enable Warning BC42104 ' Variable is used before it has been assigned a value
         End If
 
         If (y4Index < Main.LAST) Then
+#Disable Warning BC42104 ' Variable is used before it has been assigned a value
+#Disable Warning BC42104 ' Variable is used before it has been assigned a value
             plotModel.Axes.Add(New LinearAxis() With {
                            .Key = "y4",
                            .AxisDistance = 50,
@@ -775,6 +787,8 @@ Public Class AnalysisForm
                            .MajorGridlineStyle = LineStyle.Dash,
                            .MajorStep = 1, .Unit = y4AxisUnit
                            })
+#Enable Warning BC42104 ' Variable is used before it has been assigned a value
+#Enable Warning BC42104 ' Variable is used before it has been assigned a value
         End If
 
         Dim lineStyles As LineStyle() = {LineStyle.Solid, LineStyle.Dash, LineStyle.LongDash, LineStyle.DashDot, LineStyle.LongDashDot}
@@ -857,7 +871,9 @@ Public Class AnalysisForm
 
                 If (y1Index < Main.LAST) Then
                     y1Value = Main.DataActions(y1Index)(dataRecord) * Main.DataUnits(y1Index, y1UnitsIndex)
+#Disable Warning BC42104 ' Variable is used before it has been assigned a value
                     lineSeries1.Points.Add(New OxyPlot.DataPoint(xValue, y1Value))
+#Enable Warning BC42104 ' Variable is used before it has been assigned a value
                     If (y1Value > y1Max) Then
                         y1Max = y1Value
                         y1MaxX = xValue
@@ -866,7 +882,9 @@ Public Class AnalysisForm
 
                 If (y2Index < Main.LAST) Then
                     y2Value = Main.DataActions(y2Index)(dataRecord) * Main.DataUnits(y2Index, y2UnitsIndex)
+#Disable Warning BC42104 ' Variable is used before it has been assigned a value
                     lineSeries2.Points.Add(New OxyPlot.DataPoint(xValue, y2Value))
+#Enable Warning BC42104 ' Variable is used before it has been assigned a value
                     If (y2Value > y2Max) Then
                         y2Max = y2Value
                         y2MaxX = xValue
@@ -875,7 +893,9 @@ Public Class AnalysisForm
 
                 If (y3Index < Main.LAST) Then
                     y3Value = Main.DataActions(y3Index)(dataRecord) * Main.DataUnits(y3Index, y3UnitsIndex)
+#Disable Warning BC42104 ' Variable is used before it has been assigned a value
                     lineSeries3.Points.Add(New OxyPlot.DataPoint(xValue, y3Value))
+#Enable Warning BC42104 ' Variable is used before it has been assigned a value
                     If (y3Value > y3Max) Then
                         y3Max = y3Value
                         y3MaxX = xValue
@@ -884,7 +904,9 @@ Public Class AnalysisForm
 
                 If (y4Index < Main.LAST) Then
                     y4Value = Main.DataActions(y4Index)(dataRecord) * Main.DataUnits(y4Index, y4UnitsIndex)
+#Disable Warning BC42104 ' Variable is used before it has been assigned a value
                     lineSeries4.Points.Add(New OxyPlot.DataPoint(xValue, y4Value))
+#Enable Warning BC42104 ' Variable is used before it has been assigned a value
                     If (y4Value > y4Max) Then
                         y4Max = y4Value
                         y4MaxX = xValue

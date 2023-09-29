@@ -5,7 +5,7 @@
     Private ParameterLabel As Point
     Private ResultLabel As Point
     Private UnitLabel As Point
-    
+
     'Control specific configuration variable
     Public Overrides Sub ControlSpecificInitialization()
         myType = "Label"
@@ -90,7 +90,7 @@
 
     End Sub
     Overrides Sub DrawToBuffer(ByVal g As Graphics)
-       
+
         Dim StringResult As String
         'replace the custom format with new version
         'StringResult = Y_Result(XY_Selected).ToString(CustomFormat(Y_Result(XY_Selected)))
@@ -98,7 +98,7 @@
         ResultLabel.X = CInt((Me.ClientSize.Width - Grafx.Graphics.MeasureString(StringResult, Y_DataFont(XY_Selected)).Width) / 2)
 
         Grafx.Graphics.Clear(BackClr)
-       
+
         With Grafx.Graphics
             .DrawString(Y_PrimaryLabel(XY_Selected), Y_AxisFont, AxisBrush, ParameterLabel)
             .DrawString(StringResult, Y_DataFont(XY_Selected), Y_DataBrush(XY_Selected), ResultLabel)
@@ -116,7 +116,7 @@
         str1 = "Configuration"
         str2 = {"Vertical", "Horizontal"}
         str3 = {}
-     
+
         TestStrip = CreateAToolStripMenuItem("O", str1, str2, str3) ', str4, str5)
         contextmnu.Items.Add(TestStrip)
 
@@ -131,7 +131,9 @@
     End Sub
     Public Overrides Function ControlSpecificSerializationData() As String '- REMOVE COLOR ETC THAT SHOULD BE HANDLED BY THE PARENT CLASS
 
+#Disable Warning BC42105 ' Function doesn't return a value on all code paths
     End Function
+#Enable Warning BC42105 ' Function doesn't return a value on all code paths
     Public Overrides Sub ControlSpecficCreateFromSerializedData(ByVal Sent As String())
 
     End Sub

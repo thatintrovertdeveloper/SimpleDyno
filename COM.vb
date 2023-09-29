@@ -57,9 +57,13 @@
                     'Note the current calibration needs to use the resistance
                 Case Is = "btnCalibrateI1"
                     'use resistance and voltage to calibrate
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                     If .Resistance1 <> 0 Then
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                         .SetControlText_Threadsafe(txtA1Voltage1, .NewCustomFormat(CalibrationValues(1)))
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                         .SetControlText_Threadsafe(txtInputCurrent1, .NewCustomFormat(CalibrationValues(0) / .Resistance1))
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
 
                         txtA1Voltage1_Leave(txtA1Voltage1, tempeventargs)
                         txtInputCurrent1_Leave(txtInputCurrent1, tempeventargs)
@@ -68,9 +72,19 @@
                         txtA1Voltage1_Leave(txtA1Voltage1, tempeventargs)
                     End If
                 Case Is = "btnCalibrateI2"
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                     If .Resistance2 <> 0 Then
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                         .SetControlText_Threadsafe(txtA1Voltage2, .NewCustomFormat(CalibrationValues(1)))
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                         .SetControlText_Threadsafe(txtInputCurrent2, .NewCustomFormat(.VoltageIntercept + .VoltageSlope * CalibrationValues(0) * .BitsToVoltage / .Resistance2))
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
 
                         txtA1Voltage2_Leave(txtA1Voltage2, tempeventargs)
                         txtInputCurrent2_Leave(txtInputCurrent2, tempeventargs)

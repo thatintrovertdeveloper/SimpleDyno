@@ -141,8 +141,8 @@ Module CurveFunctions
             ' a non-zero ith coefficient.
             Dim coeff_i_i As Double = coeffs(i, i)
             If coeff_i_i = 0 Then
-                Throw New ArithmeticException(String.Format( _
-                    "There is no unique solution for these points.", _
+                Throw New ArithmeticException(String.Format(
+                    "There is no unique solution for these points.",
                     coeffs.GetUpperBound(0) - 1))
             End If
 

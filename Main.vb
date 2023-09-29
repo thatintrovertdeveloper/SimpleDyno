@@ -1,10 +1,9 @@
 'SimpleDyno
 'Damian Cunningham 2010 - 2014
+Imports System.Collections.Generic
 Imports System.IO
 Imports System.IO.Ports
 Imports System.Management
-Imports System.Drawing.Drawing2D
-Imports System.Collections.Generic
 Imports System.Runtime.InteropServices
 Public Class Main
     Inherits System.Windows.Forms.Form
@@ -24,7 +23,7 @@ Public Class Main
 #End Region
 #Region "API structures"
     'Structures Required by winmm.dll
-    <StructLayout(LayoutKind.Sequential, Pack:=1)> _
+    <StructLayout(LayoutKind.Sequential, Pack:=1)>
     Structure WAVEFORMATEX
         Dim wFormatTag As Int16
         Dim nchannels As Int16
@@ -34,7 +33,7 @@ Public Class Main
         Dim wBitsPerSample As Int16
         Dim cbSize As Int16
     End Structure
-    <StructLayout(LayoutKind.Sequential, Pack:=1)> _
+    <StructLayout(LayoutKind.Sequential, Pack:=1)>
     Structure WAVEHDR
         Dim lpData As IntPtr
         Dim dwBufferLength As Int32
@@ -48,35 +47,35 @@ Public Class Main
 #End Region
 #Region "API declarations"
     'Function declarations for winmm.dll and kernel32.dll
-    <DllImport("winmm.dll", SetLastError:=True)> _
+    <DllImport("winmm.dll", SetLastError:=True)>
     Shared Function waveInOpen(ByRef lphWaveIn As IntPtr, ByVal uDeviceID As IntPtr, ByRef lpFormat As WAVEFORMATEX, ByVal dwCallback As WaveCallBackProcedure, ByVal dwInstance As IntPtr, ByVal dwFlags As Int32) As Int32
     End Function
-    <DllImport("winmm.dll", SetLastError:=True)> _
+    <DllImport("winmm.dll", SetLastError:=True)>
     Shared Function waveInClose(ByVal hWaveIn As IntPtr) As Int32
     End Function
-    <DllImport("winmm.dll", SetLastError:=True)> _
+    <DllImport("winmm.dll", SetLastError:=True)>
     Shared Function waveInReset(ByVal hWaveIn As IntPtr) As Int32
     End Function
-    <DllImport("winmm.dll", SetLastError:=True)> _
+    <DllImport("winmm.dll", SetLastError:=True)>
     Shared Function waveInStart(ByVal hWaveIn As IntPtr) As Int32
     End Function
-    <DllImport("winmm.dll", SetLastError:=True)> _
+    <DllImport("winmm.dll", SetLastError:=True)>
     Shared Function waveInStop(ByVal hWaveIn As IntPtr) As Int32
     End Function
-    <DllImport("winmm.dll", SetLastError:=True)> _
+    <DllImport("winmm.dll", SetLastError:=True)>
     Shared Function waveInAddBuffer(ByVal hWaveIn As IntPtr, ByRef lpWaveInHdr As WAVEHDR, ByVal uSize As Int32) As Int32
     End Function
-    <DllImport("winmm.dll", SetLastError:=True)> _
+    <DllImport("winmm.dll", SetLastError:=True)>
     Shared Function waveInPrepareHeader(ByVal hWaveIn As IntPtr, ByRef lpWaveInHdr As WAVEHDR, ByVal uSize As Int32) As Int32
     End Function
-    <DllImport("winmm.dll", SetLastError:=True)> _
+    <DllImport("winmm.dll", SetLastError:=True)>
     Shared Function waveInUnprepareHeader(ByVal hWaveIn As IntPtr, ByRef lpWaveInHdr As WAVEHDR, ByVal uSize As Int32) As Int32
     End Function
     'QueryPerformanceCounter and  QueryPerformanceFrequency are used for performance testing only
-    <DllImport("kernel32.dll", SetLastError:=True)> _
+    <DllImport("kernel32.dll", SetLastError:=True)>
     Shared Function QueryPerformanceCounter(ByRef lpPerformanceCount As Long) As Boolean
     End Function
-    <DllImport("kernel32.dll", SetLastError:=True)> _
+    <DllImport("kernel32.dll", SetLastError:=True)>
     Public Shared Function QueryPerformanceFrequency(<Out()> ByRef lpFrequency As Long) As Boolean
     End Function
 #End Region
@@ -150,6 +149,7 @@ Public Class Main
     Private Const MAXIMUM As Integer = 2
     Private Const MINCURMAXPOINTER As Integer = 3
     Friend WithEvents Button1 As System.Windows.Forms.Button
+    Protected WithEvents PictureBox1 As PictureBox
 
 #End Region
 #Region "SimpleDyno Function Declarations"
@@ -529,6 +529,8 @@ Public Class Main
         Me.btnPerformanceTest = New System.Windows.Forms.Button()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.pnlSignalWindow = New SimpleDyno.DoubleBufferPanel()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'SaveFileDialog1
@@ -537,67 +539,88 @@ Public Class Main
         '
         'btnStartLoggingRaw
         '
+        Me.btnStartLoggingRaw.BackColor = System.Drawing.Color.Transparent
+        Me.btnStartLoggingRaw.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.btnStartLoggingRaw.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnStartLoggingRaw.Location = New System.Drawing.Point(274, 1)
+        Me.btnStartLoggingRaw.ForeColor = System.Drawing.Color.White
+        Me.btnStartLoggingRaw.Location = New System.Drawing.Point(433, 1)
         Me.btnStartLoggingRaw.Name = "btnStartLoggingRaw"
         Me.btnStartLoggingRaw.Size = New System.Drawing.Size(68, 21)
         Me.btnStartLoggingRaw.TabIndex = 42
         Me.btnStartLoggingRaw.Text = "Log Raw Data"
+        Me.btnStartLoggingRaw.UseVisualStyleBackColor = False
         '
         'btnResetMaxima
         '
+        Me.btnResetMaxima.BackColor = System.Drawing.Color.Transparent
+        Me.btnResetMaxima.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.btnResetMaxima.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnResetMaxima.Location = New System.Drawing.Point(138, 1)
+        Me.btnResetMaxima.ForeColor = System.Drawing.Color.White
+        Me.btnResetMaxima.Location = New System.Drawing.Point(297, 1)
         Me.btnResetMaxima.Name = "btnResetMaxima"
         Me.btnResetMaxima.Size = New System.Drawing.Size(68, 21)
         Me.btnResetMaxima.TabIndex = 41
         Me.btnResetMaxima.Text = "Reset"
+        Me.btnResetMaxima.UseVisualStyleBackColor = False
         '
         'btnStartPowerRun
         '
+        Me.btnStartPowerRun.BackColor = System.Drawing.Color.Transparent
+        Me.btnStartPowerRun.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.btnStartPowerRun.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnStartPowerRun.Location = New System.Drawing.Point(342, 1)
+        Me.btnStartPowerRun.ForeColor = System.Drawing.Color.White
+        Me.btnStartPowerRun.Location = New System.Drawing.Point(501, 1)
         Me.btnStartPowerRun.Name = "btnStartPowerRun"
         Me.btnStartPowerRun.Size = New System.Drawing.Size(68, 21)
         Me.btnStartPowerRun.TabIndex = 43
         Me.btnStartPowerRun.Text = "Power Run"
+        Me.btnStartPowerRun.UseVisualStyleBackColor = False
         '
         'btnCOM
         '
+        Me.btnCOM.BackColor = System.Drawing.Color.Transparent
+        Me.btnCOM.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.btnCOM.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnCOM.Location = New System.Drawing.Point(70, 1)
+        Me.btnCOM.ForeColor = System.Drawing.Color.White
+        Me.btnCOM.Location = New System.Drawing.Point(229, 1)
         Me.btnCOM.Name = "btnCOM"
         Me.btnCOM.Size = New System.Drawing.Size(68, 21)
         Me.btnCOM.TabIndex = 172
         Me.btnCOM.Text = "COM"
-        Me.btnCOM.UseVisualStyleBackColor = True
+        Me.btnCOM.UseVisualStyleBackColor = False
         '
         'btnDyno
         '
+        Me.btnDyno.BackColor = System.Drawing.Color.Transparent
+        Me.btnDyno.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.btnDyno.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnDyno.Location = New System.Drawing.Point(2, 1)
+        Me.btnDyno.ForeColor = System.Drawing.Color.White
+        Me.btnDyno.Location = New System.Drawing.Point(161, 1)
         Me.btnDyno.Name = "btnDyno"
         Me.btnDyno.Size = New System.Drawing.Size(68, 21)
         Me.btnDyno.TabIndex = 170
         Me.btnDyno.Text = "Dyno"
-        Me.btnDyno.UseVisualStyleBackColor = True
+        Me.btnDyno.UseVisualStyleBackColor = False
         '
         'btnAnalysis
         '
+        Me.btnAnalysis.BackColor = System.Drawing.Color.Transparent
+        Me.btnAnalysis.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.btnAnalysis.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnAnalysis.Location = New System.Drawing.Point(206, 1)
+        Me.btnAnalysis.ForeColor = System.Drawing.Color.White
+        Me.btnAnalysis.Location = New System.Drawing.Point(365, 1)
         Me.btnAnalysis.Name = "btnAnalysis"
         Me.btnAnalysis.Size = New System.Drawing.Size(68, 21)
         Me.btnAnalysis.TabIndex = 171
         Me.btnAnalysis.Text = "Analysis"
-        Me.btnAnalysis.UseVisualStyleBackColor = True
+        Me.btnAnalysis.UseVisualStyleBackColor = False
         '
         'txtThreshold2
         '
         Me.txtThreshold2.CausesValidation = False
         Me.txtThreshold2.Enabled = False
         Me.txtThreshold2.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtThreshold2.Location = New System.Drawing.Point(396, 68)
+        Me.txtThreshold2.Location = New System.Drawing.Point(555, 68)
         Me.txtThreshold2.Name = "txtThreshold2"
         Me.txtThreshold2.Size = New System.Drawing.Size(23, 21)
         Me.txtThreshold2.TabIndex = 169
@@ -611,7 +634,7 @@ Public Class Main
         Me.txtThreshold1.CausesValidation = False
         Me.txtThreshold1.Enabled = False
         Me.txtThreshold1.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtThreshold1.Location = New System.Drawing.Point(367, 67)
+        Me.txtThreshold1.Location = New System.Drawing.Point(526, 67)
         Me.txtThreshold1.Name = "txtThreshold1"
         Me.txtThreshold1.Size = New System.Drawing.Size(23, 21)
         Me.txtThreshold1.TabIndex = 168
@@ -622,74 +645,94 @@ Public Class Main
         '
         'btnClose
         '
+        Me.btnClose.BackColor = System.Drawing.Color.Transparent
         Me.btnClose.Enabled = False
+        Me.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.btnClose.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnClose.Location = New System.Drawing.Point(206, 90)
+        Me.btnClose.ForeColor = System.Drawing.Color.White
+        Me.btnClose.Location = New System.Drawing.Point(365, 90)
         Me.btnClose.Name = "btnClose"
         Me.btnClose.Size = New System.Drawing.Size(68, 21)
         Me.btnClose.TabIndex = 86
         Me.btnClose.Text = "Close"
-        Me.btnClose.UseVisualStyleBackColor = True
+        Me.btnClose.UseVisualStyleBackColor = False
         '
         'btnMultiYTime
         '
+        Me.btnMultiYTime.BackColor = System.Drawing.Color.Transparent
+        Me.btnMultiYTime.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.btnMultiYTime.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnMultiYTime.Location = New System.Drawing.Point(138, 68)
+        Me.btnMultiYTime.ForeColor = System.Drawing.Color.White
+        Me.btnMultiYTime.Location = New System.Drawing.Point(297, 68)
         Me.btnMultiYTime.Name = "btnMultiYTime"
         Me.btnMultiYTime.Size = New System.Drawing.Size(68, 21)
         Me.btnMultiYTime.TabIndex = 85
         Me.btnMultiYTime.Text = "Y vs Time"
-        Me.btnMultiYTime.UseVisualStyleBackColor = True
+        Me.btnMultiYTime.UseVisualStyleBackColor = False
         '
         'btnLoad
         '
+        Me.btnLoad.BackColor = System.Drawing.Color.Transparent
         Me.btnLoad.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
+        Me.btnLoad.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.btnLoad.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnLoad.Location = New System.Drawing.Point(2, 90)
+        Me.btnLoad.ForeColor = System.Drawing.Color.White
+        Me.btnLoad.Location = New System.Drawing.Point(161, 90)
         Me.btnLoad.Name = "btnLoad"
         Me.btnLoad.Size = New System.Drawing.Size(68, 21)
         Me.btnLoad.TabIndex = 77
         Me.btnLoad.Text = "Load"
-        Me.btnLoad.UseVisualStyleBackColor = True
+        Me.btnLoad.UseVisualStyleBackColor = False
         '
         'btnSave
         '
+        Me.btnSave.BackColor = System.Drawing.Color.Transparent
         Me.btnSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.btnSave.Enabled = False
+        Me.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.btnSave.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSave.Location = New System.Drawing.Point(70, 90)
+        Me.btnSave.ForeColor = System.Drawing.Color.White
+        Me.btnSave.Location = New System.Drawing.Point(229, 90)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(68, 21)
         Me.btnSave.TabIndex = 78
         Me.btnSave.Text = "Save"
-        Me.btnSave.UseVisualStyleBackColor = True
+        Me.btnSave.UseVisualStyleBackColor = False
         '
         'btnNewGauge
         '
+        Me.btnNewGauge.BackColor = System.Drawing.Color.Transparent
+        Me.btnNewGauge.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.btnNewGauge.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnNewGauge.Location = New System.Drawing.Point(70, 68)
+        Me.btnNewGauge.ForeColor = System.Drawing.Color.White
+        Me.btnNewGauge.Location = New System.Drawing.Point(229, 68)
         Me.btnNewGauge.Name = "btnNewGauge"
         Me.btnNewGauge.Size = New System.Drawing.Size(68, 21)
         Me.btnNewGauge.TabIndex = 83
         Me.btnNewGauge.Text = "Gauge"
-        Me.btnNewGauge.UseVisualStyleBackColor = True
+        Me.btnNewGauge.UseVisualStyleBackColor = False
         '
         'btnSaveAs
         '
+        Me.btnSaveAs.BackColor = System.Drawing.Color.Transparent
         Me.btnSaveAs.Enabled = False
+        Me.btnSaveAs.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.btnSaveAs.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSaveAs.Location = New System.Drawing.Point(138, 90)
+        Me.btnSaveAs.ForeColor = System.Drawing.Color.White
+        Me.btnSaveAs.Location = New System.Drawing.Point(297, 90)
         Me.btnSaveAs.Name = "btnSaveAs"
         Me.btnSaveAs.Size = New System.Drawing.Size(68, 21)
         Me.btnSaveAs.TabIndex = 79
         Me.btnSaveAs.Text = "Save As"
-        Me.btnSaveAs.UseVisualStyleBackColor = True
+        Me.btnSaveAs.UseVisualStyleBackColor = False
         '
         'Label17
         '
         Me.Label17.AutoSize = True
+        Me.Label17.BackColor = System.Drawing.Color.Transparent
         Me.Label17.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label17.Location = New System.Drawing.Point(274, 27)
+        Me.Label17.ForeColor = System.Drawing.Color.White
+        Me.Label17.Location = New System.Drawing.Point(433, 27)
         Me.Label17.Name = "Label17"
         Me.Label17.Size = New System.Drawing.Size(66, 13)
         Me.Label17.TabIndex = 58
@@ -698,41 +741,51 @@ Public Class Main
         '
         'btnNewLabel
         '
+        Me.btnNewLabel.BackColor = System.Drawing.Color.Transparent
+        Me.btnNewLabel.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.btnNewLabel.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnNewLabel.Location = New System.Drawing.Point(2, 68)
+        Me.btnNewLabel.ForeColor = System.Drawing.Color.White
+        Me.btnNewLabel.Location = New System.Drawing.Point(161, 68)
         Me.btnNewLabel.Name = "btnNewLabel"
         Me.btnNewLabel.Size = New System.Drawing.Size(68, 21)
         Me.btnNewLabel.TabIndex = 82
         Me.btnNewLabel.Text = "Label"
-        Me.btnNewLabel.UseVisualStyleBackColor = True
+        Me.btnNewLabel.UseVisualStyleBackColor = False
         '
         'btnHide
         '
+        Me.btnHide.BackColor = System.Drawing.Color.Transparent
         Me.btnHide.Enabled = False
+        Me.btnHide.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.btnHide.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnHide.Location = New System.Drawing.Point(274, 90)
+        Me.btnHide.ForeColor = System.Drawing.Color.White
+        Me.btnHide.Location = New System.Drawing.Point(433, 90)
         Me.btnHide.Name = "btnHide"
         Me.btnHide.Size = New System.Drawing.Size(68, 21)
         Me.btnHide.TabIndex = 80
         Me.btnHide.Text = "Hide"
-        Me.btnHide.UseVisualStyleBackColor = True
+        Me.btnHide.UseVisualStyleBackColor = False
         '
         'btnShow
         '
+        Me.btnShow.BackColor = System.Drawing.Color.Transparent
         Me.btnShow.Enabled = False
+        Me.btnShow.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.btnShow.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnShow.Location = New System.Drawing.Point(342, 90)
+        Me.btnShow.ForeColor = System.Drawing.Color.White
+        Me.btnShow.Location = New System.Drawing.Point(501, 90)
         Me.btnShow.Name = "btnShow"
         Me.btnShow.Size = New System.Drawing.Size(68, 21)
         Me.btnShow.TabIndex = 81
         Me.btnShow.Text = "Show"
-        Me.btnShow.UseVisualStyleBackColor = True
+        Me.btnShow.UseVisualStyleBackColor = False
         '
         'txtPowerRunThreshold
         '
+        Me.txtPowerRunThreshold.BackColor = System.Drawing.SystemColors.Window
         Me.txtPowerRunThreshold.CausesValidation = False
         Me.txtPowerRunThreshold.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtPowerRunThreshold.Location = New System.Drawing.Point(342, 24)
+        Me.txtPowerRunThreshold.Location = New System.Drawing.Point(501, 24)
         Me.txtPowerRunThreshold.Name = "txtPowerRunThreshold"
         Me.txtPowerRunThreshold.Size = New System.Drawing.Size(67, 21)
         Me.txtPowerRunThreshold.TabIndex = 44
@@ -744,7 +797,7 @@ Public Class Main
         '
         Me.txtZeroTimeDetect.CausesValidation = False
         Me.txtZeroTimeDetect.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtZeroTimeDetect.Location = New System.Drawing.Point(492, 68)
+        Me.txtZeroTimeDetect.Location = New System.Drawing.Point(651, 68)
         Me.txtZeroTimeDetect.Name = "txtZeroTimeDetect"
         Me.txtZeroTimeDetect.Size = New System.Drawing.Size(38, 21)
         Me.txtZeroTimeDetect.TabIndex = 51
@@ -756,7 +809,7 @@ Public Class Main
         '
         Me.lblZeroDetect.AutoSize = True
         Me.lblZeroDetect.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblZeroDetect.Location = New System.Drawing.Point(426, 72)
+        Me.lblZeroDetect.Location = New System.Drawing.Point(585, 72)
         Me.lblZeroDetect.Name = "lblZeroDetect"
         Me.lblZeroDetect.Size = New System.Drawing.Size(64, 13)
         Me.lblZeroDetect.TabIndex = 32
@@ -765,17 +818,20 @@ Public Class Main
         '
         'btnStartAcquisition
         '
-        Me.btnStartAcquisition.Location = New System.Drawing.Point(425, 90)
+        Me.btnStartAcquisition.BackColor = System.Drawing.Color.Black
+        Me.btnStartAcquisition.FlatStyle = System.Windows.Forms.FlatStyle.System
+        Me.btnStartAcquisition.ForeColor = System.Drawing.Color.White
+        Me.btnStartAcquisition.Location = New System.Drawing.Point(584, 90)
         Me.btnStartAcquisition.Name = "btnStartAcquisition"
         Me.btnStartAcquisition.Size = New System.Drawing.Size(105, 21)
         Me.btnStartAcquisition.TabIndex = 163
         Me.btnStartAcquisition.Text = "Start"
-        Me.btnStartAcquisition.UseVisualStyleBackColor = True
+        Me.btnStartAcquisition.UseVisualStyleBackColor = False
         '
         'cmbAcquisition
         '
         Me.cmbAcquisition.FormattingEnabled = True
-        Me.cmbAcquisition.Location = New System.Drawing.Point(426, 2)
+        Me.cmbAcquisition.Location = New System.Drawing.Point(585, 2)
         Me.cmbAcquisition.Name = "cmbAcquisition"
         Me.cmbAcquisition.Size = New System.Drawing.Size(171, 21)
         Me.cmbAcquisition.TabIndex = 162
@@ -783,7 +839,7 @@ Public Class Main
         'cmbSampleRate
         '
         Me.cmbSampleRate.FormattingEnabled = True
-        Me.cmbSampleRate.Location = New System.Drawing.Point(508, 24)
+        Me.cmbSampleRate.Location = New System.Drawing.Point(667, 24)
         Me.cmbSampleRate.Name = "cmbSampleRate"
         Me.cmbSampleRate.Size = New System.Drawing.Size(89, 21)
         Me.cmbSampleRate.TabIndex = 161
@@ -791,7 +847,7 @@ Public Class Main
         'cmbChannels
         '
         Me.cmbChannels.FormattingEnabled = True
-        Me.cmbChannels.Location = New System.Drawing.Point(426, 24)
+        Me.cmbChannels.Location = New System.Drawing.Point(585, 24)
         Me.cmbChannels.Name = "cmbChannels"
         Me.cmbChannels.Size = New System.Drawing.Size(81, 21)
         Me.cmbChannels.TabIndex = 160
@@ -799,7 +855,7 @@ Public Class Main
         'cmbBaudRate
         '
         Me.cmbBaudRate.FormattingEnabled = True
-        Me.cmbBaudRate.Location = New System.Drawing.Point(531, 46)
+        Me.cmbBaudRate.Location = New System.Drawing.Point(690, 46)
         Me.cmbBaudRate.Name = "cmbBaudRate"
         Me.cmbBaudRate.Size = New System.Drawing.Size(66, 21)
         Me.cmbBaudRate.TabIndex = 159
@@ -808,7 +864,7 @@ Public Class Main
         '
         Me.cmbCOMPorts.DropDownWidth = 300
         Me.cmbCOMPorts.FormattingEnabled = True
-        Me.cmbCOMPorts.Location = New System.Drawing.Point(426, 46)
+        Me.cmbCOMPorts.Location = New System.Drawing.Point(585, 46)
         Me.cmbCOMPorts.Name = "cmbCOMPorts"
         Me.cmbCOMPorts.Size = New System.Drawing.Size(104, 21)
         Me.cmbCOMPorts.TabIndex = 158
@@ -816,7 +872,7 @@ Public Class Main
         'lblCOMActive
         '
         Me.lblCOMActive.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblCOMActive.Location = New System.Drawing.Point(531, 91)
+        Me.lblCOMActive.Location = New System.Drawing.Point(690, 91)
         Me.lblCOMActive.Name = "lblCOMActive"
         Me.lblCOMActive.Size = New System.Drawing.Size(66, 19)
         Me.lblCOMActive.TabIndex = 157
@@ -829,8 +885,10 @@ Public Class Main
         '
         'lblInterface
         '
+        Me.lblInterface.BackColor = System.Drawing.Color.Transparent
         Me.lblInterface.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblInterface.Location = New System.Drawing.Point(1, 54)
+        Me.lblInterface.ForeColor = System.Drawing.Color.White
+        Me.lblInterface.Location = New System.Drawing.Point(160, 54)
         Me.lblInterface.Name = "lblInterface"
         Me.lblInterface.Size = New System.Drawing.Size(205, 13)
         Me.lblInterface.TabIndex = 174
@@ -842,19 +900,18 @@ Public Class Main
         Me.txtInterface.CausesValidation = False
         Me.txtInterface.Enabled = False
         Me.txtInterface.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtInterface.Location = New System.Drawing.Point(342, 68)
+        Me.txtInterface.Location = New System.Drawing.Point(501, 68)
         Me.txtInterface.Name = "txtInterface"
         Me.txtInterface.Size = New System.Drawing.Size(23, 21)
         Me.txtInterface.TabIndex = 175
         Me.txtInterface.Tag = ""
-        Me.txtInterface.Text = Path.Combine(Me.SettingsDirectory, "DefaultView.sdi")
         Me.txtInterface.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.txtInterface.Visible = False
         '
         'chkAdvancedProcessing
         '
         Me.chkAdvancedProcessing.AutoSize = True
-        Me.chkAdvancedProcessing.Location = New System.Drawing.Point(531, 71)
+        Me.chkAdvancedProcessing.Location = New System.Drawing.Point(690, 71)
         Me.chkAdvancedProcessing.Name = "chkAdvancedProcessing"
         Me.chkAdvancedProcessing.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.chkAdvancedProcessing.Size = New System.Drawing.Size(45, 17)
@@ -865,7 +922,7 @@ Public Class Main
         'cmbBufferSize
         '
         Me.cmbBufferSize.FormattingEnabled = True
-        Me.cmbBufferSize.Location = New System.Drawing.Point(300, 68)
+        Me.cmbBufferSize.Location = New System.Drawing.Point(459, 68)
         Me.cmbBufferSize.Name = "cmbBufferSize"
         Me.cmbBufferSize.Size = New System.Drawing.Size(36, 21)
         Me.cmbBufferSize.TabIndex = 183
@@ -873,41 +930,64 @@ Public Class Main
         '
         'btnPerformanceTest
         '
+        Me.btnPerformanceTest.BackColor = System.Drawing.Color.Transparent
         Me.btnPerformanceTest.Enabled = False
+        Me.btnPerformanceTest.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.btnPerformanceTest.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnPerformanceTest.Location = New System.Drawing.Point(214, 67)
+        Me.btnPerformanceTest.ForeColor = System.Drawing.Color.White
+        Me.btnPerformanceTest.Location = New System.Drawing.Point(373, 67)
         Me.btnPerformanceTest.Name = "btnPerformanceTest"
         Me.btnPerformanceTest.Size = New System.Drawing.Size(36, 22)
         Me.btnPerformanceTest.TabIndex = 184
         Me.btnPerformanceTest.Text = "Perf"
-        Me.btnPerformanceTest.UseVisualStyleBackColor = True
+        Me.btnPerformanceTest.UseVisualStyleBackColor = False
         Me.btnPerformanceTest.Visible = False
         '
         'Button1
         '
+        Me.Button1.BackColor = System.Drawing.Color.Transparent
+        Me.Button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Button1.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button1.Location = New System.Drawing.Point(2, 23)
+        Me.Button1.ForeColor = System.Drawing.Color.White
+        Me.Button1.Location = New System.Drawing.Point(161, 23)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(68, 21)
         Me.Button1.TabIndex = 185
         Me.Button1.Text = "Correction"
+        Me.Button1.UseVisualStyleBackColor = False
         '
         'pnlSignalWindow
         '
         Me.pnlSignalWindow.BackColor = System.Drawing.SystemColors.Control
         Me.pnlSignalWindow.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
         Me.pnlSignalWindow.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlSignalWindow.Location = New System.Drawing.Point(599, 2)
+        Me.pnlSignalWindow.Location = New System.Drawing.Point(758, 2)
         Me.pnlSignalWindow.Name = "pnlSignalWindow"
         Me.pnlSignalWindow.Size = New System.Drawing.Size(25, 108)
         Me.pnlSignalWindow.TabIndex = 33
         '
+        'PictureBox1
+        '
+        Me.PictureBox1.ErrorImage = Nothing
+        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
+        Me.PictureBox1.InitialImage = Nothing
+        Me.PictureBox1.Location = New System.Drawing.Point(2, 2)
+        Me.PictureBox1.Margin = New System.Windows.Forms.Padding(0, 5, 0, 5)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Padding = New System.Windows.Forms.Padding(0, 4, 0, 0)
+        Me.PictureBox1.Size = New System.Drawing.Size(0, 0)
+        Me.PictureBox1.TabIndex = 186
+        Me.PictureBox1.TabStop = False
+        '
         'Main
         '
-        Me.AutoScaleBaseSize = New System.Drawing.Size(5, 14)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
+        Me.BackgroundImage = Global.SimpleDyno.My.Resources.Resources.bg_fire_3
         Me.CausesValidation = False
-        Me.ClientSize = New System.Drawing.Size(626, 112)
+        Me.ClientSize = New System.Drawing.Size(784, 112)
+        Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.txtThreshold1)
         Me.Controls.Add(Me.pnlSignalWindow)
         Me.Controls.Add(Me.txtThreshold2)
@@ -949,7 +1029,9 @@ Public Class Main
         Me.MaximizeBox = False
         Me.Name = "Main"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "SimpleDyno 6_2_5 Beta by DamoRC"
+        Me.Tag = "SimpleDyno 6.5.3 by Melo Schooter Works"
+        Me.Text = "SimpleDyno 6.5.3 by Melo Schooter Works"
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1010,7 +1092,7 @@ Public Class Main
 
         'Set Size and Title
         Me.Top = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height - Me.Height
-        Me.Text = "SimpleDyno 6.5.3" ' MainTitle
+        Me.Text = "SimpleDyno by Melo Scooter Works - 6.5.3" ' MainTitle
 
         'Open Up the default interface
         LoadInterface()
@@ -2043,7 +2125,7 @@ Public Class Main
         DataUnits(CORRECTED_POWER_MOTOR, 0) = 1
         DataUnits(CORRECTED_POWER_MOTOR, 1) = 0.001
         DataUnits(CORRECTED_POWER_MOTOR, 2) = 0.00134
-        DataActions(CORRECTED_POWER_MOTOR) = Function(x) x.Corr_Motor_Power 
+        DataActions(CORRECTED_POWER_MOTOR) = Function(x) x.Corr_Motor_Power
 
 #If QueryPerformance Then
         DataTags(PERFORMANCE) = "Performance"
@@ -2246,7 +2328,9 @@ Public Class Main
                 myWaveHandler_ProcessWave()
             End If
         End If
+#Disable Warning BC42353 ' Function doesn't return a value on all code paths
     End Function
+#Enable Warning BC42353 ' Function doesn't return a value on all code paths
     Private Sub myWaveHandler_ProcessWave()
         Try
 #If QueryPerformance Then
@@ -2419,95 +2503,95 @@ Public Class Main
                                     End If
                             End Select
                         End If
+                    End If
+                    If (WhichSignal = HIGHSIGNAL AndAlso RawWaveData(j) <= HighSignalThreshold - 3) Or (WhichSignal = LOWSIGNAL AndAlso RawWaveData(j) >= HighSignalThreshold + 3) Then
+                        If FoundHighSignal = True Then
+                            Data(CHAN1_PULSEWIDTH, ACTUAL) = k * BytesToSeconds * 1000
+                            If Data(CHAN1_PULSEWIDTH, ACTUAL) > Data(CHAN1_PULSEWIDTH, MAXIMUM) Then Data(CHAN1_PULSEWIDTH, MAXIMUM) = Data(CHAN1_PULSEWIDTH, ACTUAL)
+                            If Data(CHAN1_PULSEWIDTH, ACTUAL) < Data(CHAN1_PULSEWIDTH, MINIMUM) Then Data(CHAN1_PULSEWIDTH, MINIMUM) = Data(CHAN1_PULSEWIDTH, ACTUAL)
+                            k = 0
+                            Data(CHAN1_DUTYCYCLE, ACTUAL) = Data(CHAN1_PULSEWIDTH, ACTUAL) * Data(CHAN1_FREQUENCY, ACTUAL) / 10
+                            If Data(CHAN1_DUTYCYCLE, ACTUAL) > Data(CHAN1_DUTYCYCLE, MAXIMUM) Then Data(CHAN1_DUTYCYCLE, MAXIMUM) = Data(CHAN1_DUTYCYCLE, ACTUAL)
+                            If Data(CHAN1_DUTYCYCLE, ACTUAL) < Data(CHAN1_DUTYCYCLE, MINIMUM) Then Data(CHAN1_DUTYCYCLE, MINIMUM) = Data(CHAN1_DUTYCYCLE, ACTUAL)
                         End If
-                        If (WhichSignal = HIGHSIGNAL AndAlso RawWaveData(j) <= HighSignalThreshold - 3) Or (WhichSignal = LOWSIGNAL AndAlso RawWaveData(j) >= HighSignalThreshold + 3) Then
-                            If FoundHighSignal = True Then
-                                Data(CHAN1_PULSEWIDTH, ACTUAL) = k * BytesToSeconds * 1000
-                                If Data(CHAN1_PULSEWIDTH, ACTUAL) > Data(CHAN1_PULSEWIDTH, MAXIMUM) Then Data(CHAN1_PULSEWIDTH, MAXIMUM) = Data(CHAN1_PULSEWIDTH, ACTUAL)
-                                If Data(CHAN1_PULSEWIDTH, ACTUAL) < Data(CHAN1_PULSEWIDTH, MINIMUM) Then Data(CHAN1_PULSEWIDTH, MINIMUM) = Data(CHAN1_PULSEWIDTH, ACTUAL)
-                                k = 0
-                                Data(CHAN1_DUTYCYCLE, ACTUAL) = Data(CHAN1_PULSEWIDTH, ACTUAL) * Data(CHAN1_FREQUENCY, ACTUAL) / 10
-                                If Data(CHAN1_DUTYCYCLE, ACTUAL) > Data(CHAN1_DUTYCYCLE, MAXIMUM) Then Data(CHAN1_DUTYCYCLE, MAXIMUM) = Data(CHAN1_DUTYCYCLE, ACTUAL)
-                                If Data(CHAN1_DUTYCYCLE, ACTUAL) < Data(CHAN1_DUTYCYCLE, MINIMUM) Then Data(CHAN1_DUTYCYCLE, MINIMUM) = Data(CHAN1_DUTYCYCLE, ACTUAL)
-                            End If
-                            FoundHighSignal = False
-                        End If
+                        FoundHighSignal = False
+                    End If
 
-                        LastSignal = RawWaveData(j) 'remember the last high signal and the current correction time
+                    LastSignal = RawWaveData(j) 'remember the last high signal and the current correction time
 
-                        If NUMBER_OF_CHANNELS = 2 Then
+                    If NUMBER_OF_CHANNELS = 2 Then
 
-                            SignalWindowBMP.DrawLine(Channel2ThresholdPen, 0, SignalThreshold2YConverted, PicSignalWidth, SignalThreshold2YConverted)
-                            NextYPosition2 = CInt(PicSignalHeight - RawWaveData(j + 1) * SignalYConversion) + 1    'calculate coordinate for next channel 2 signal point
-                            SignalWindowBMP.DrawLine(Channel2SignalPen, CInt(CurrentSignalXPosition - SignalXConversion), LastYPosition2, CInt(CurrentSignalXPosition), NextYPosition2) 'draw line to the newly calculated point...
-                            LastYPosition2 = NextYPosition2 '...and remember the new position for the next cycle
+                        SignalWindowBMP.DrawLine(Channel2ThresholdPen, 0, SignalThreshold2YConverted, PicSignalWidth, SignalThreshold2YConverted)
+                        NextYPosition2 = CInt(PicSignalHeight - RawWaveData(j + 1) * SignalYConversion) + 1    'calculate coordinate for next channel 2 signal point
+                        SignalWindowBMP.DrawLine(Channel2SignalPen, CInt(CurrentSignalXPosition - SignalXConversion), LastYPosition2, CInt(CurrentSignalXPosition), NextYPosition2) 'draw line to the newly calculated point...
+                        LastYPosition2 = NextYPosition2 '...and remember the new position for the next cycle
 
-                            If (WhichSignal2 = HIGHSIGNAL AndAlso RawWaveData(j + 1) > HighSignalThreshold2) Or (WhichSignal2 = LOWSIGNAL AndAlso RawWaveData(j + 1) < HighSignalThreshold2) Then 'Check is we have found a signal depending on where the threshold line is set
+                        If (WhichSignal2 = HIGHSIGNAL AndAlso RawWaveData(j + 1) > HighSignalThreshold2) Or (WhichSignal2 = LOWSIGNAL AndAlso RawWaveData(j + 1) < HighSignalThreshold2) Then 'Check is we have found a signal depending on where the threshold line is set
 
-                                k2 = k2 + NUMBER_OF_CHANNELS 'count bytes for channel 2 pulsewidth
+                            k2 = k2 + NUMBER_OF_CHANNELS 'count bytes for channel 2 pulsewidth
 
-                                If FoundHighSignal2 = False Then    'if FoundHighSigal is false, then this is the start of a new pulse not the middle of an existing pulse
+                            If FoundHighSignal2 = False Then    'if FoundHighSigal is false, then this is the start of a new pulse not the middle of an existing pulse
 
-                                    FoundHighSignal2 = True 'flag that we are in the middle of a pulse
+                                FoundHighSignal2 = True 'flag that we are in the middle of a pulse
 
-                                    Select Case UseAdvancedProcessing 'Calculate elapsed time simply by the byte count since last or by interpolation through the threshold line
-                                        Case Is = False
-                                            ElapsedTime2 = (j + 1 - LastHighBufferPosition2) * BytesToSeconds 'calculate the elapsed time by multiplying the number of bytes since the last pulse 'by the time taken for each byte (which depends on the sampling rate)
-                                        Case Is = True
-                                            NewElapsedTimeCorrection2 = Math.Abs((RawWaveData(j + 1) - HighSignalThreshold) / (RawWaveData(j + 1) - LastSignal2))
-                                            ElapsedTime2 = ((j + 1 - LastHighBufferPosition2) + OldElapsedTimeCorrection2 - NewElapsedTimeCorrection2) * BytesToSeconds
-                                            OldElapsedTimeCorrection2 = NewElapsedTimeCorrection2
-                                    End Select
+                                Select Case UseAdvancedProcessing 'Calculate elapsed time simply by the byte count since last or by interpolation through the threshold line
+                                    Case Is = False
+                                        ElapsedTime2 = (j + 1 - LastHighBufferPosition2) * BytesToSeconds 'calculate the elapsed time by multiplying the number of bytes since the last pulse 'by the time taken for each byte (which depends on the sampling rate)
+                                    Case Is = True
+                                        NewElapsedTimeCorrection2 = Math.Abs((RawWaveData(j + 1) - HighSignalThreshold) / (RawWaveData(j + 1) - LastSignal2))
+                                        ElapsedTime2 = ((j + 1 - LastHighBufferPosition2) + OldElapsedTimeCorrection2 - NewElapsedTimeCorrection2) * BytesToSeconds
+                                        OldElapsedTimeCorrection2 = NewElapsedTimeCorrection2
+                                End Select
 
-                                    LastHighBufferPosition2 = j + 1   'set the current buffer position for the next pulse
+                                LastHighBufferPosition2 = j + 1   'set the current buffer position for the next pulse
 
-                                    Data(CHAN2_FREQUENCY, ACTUAL) = 1 / ElapsedTime2 'calculate frequency for scope work 
-                                    If Data(CHAN2_FREQUENCY, ACTUAL) > Data(CHAN2_FREQUENCY, MAXIMUM) Then Data(CHAN2_FREQUENCY, MAXIMUM) = Data(CHAN2_FREQUENCY, ACTUAL)
-                                    If Data(CHAN2_FREQUENCY, ACTUAL) < Data(CHAN2_FREQUENCY, MINIMUM) Then Data(CHAN2_FREQUENCY, MINIMUM) = Data(CHAN2_FREQUENCY, ACTUAL)
+                                Data(CHAN2_FREQUENCY, ACTUAL) = 1 / ElapsedTime2 'calculate frequency for scope work 
+                                If Data(CHAN2_FREQUENCY, ACTUAL) > Data(CHAN2_FREQUENCY, MAXIMUM) Then Data(CHAN2_FREQUENCY, MAXIMUM) = Data(CHAN2_FREQUENCY, ACTUAL)
+                                If Data(CHAN2_FREQUENCY, ACTUAL) < Data(CHAN2_FREQUENCY, MINIMUM) Then Data(CHAN2_FREQUENCY, MINIMUM) = Data(CHAN2_FREQUENCY, ACTUAL)
 
 
-                                    Data(RPM2, ACTUAL) = ElapsedTimeToRadPerSec2 / ElapsedTime2 'calculate roller angular velocity in Rad/s
-                                    Data(RPM2_RATIO, ACTUAL) = Data(RPM2, ACTUAL) / Data(RPM1_WHEEL, ACTUAL) 'calculate the ratios between RPM2 and RPM1 - wheel
+                                Data(RPM2, ACTUAL) = ElapsedTimeToRadPerSec2 / ElapsedTime2 'calculate roller angular velocity in Rad/s
+                                Data(RPM2_RATIO, ACTUAL) = Data(RPM2, ACTUAL) / Data(RPM1_WHEEL, ACTUAL) 'calculate the ratios between RPM2 and RPM1 - wheel
 
-                                    Data(RPM2_ROLLOUT, ACTUAL) = WheelCircumference / Data(RPM2_RATIO, ACTUAL) 'calculate Rollout (default unit is mm).  This assumes RPM2 is measuring motor RPM   'Rollout is the number of mm traveled for 1 rotation of the wheel
+                                Data(RPM2_ROLLOUT, ACTUAL) = WheelCircumference / Data(RPM2_RATIO, ACTUAL) 'calculate Rollout (default unit is mm).  This assumes RPM2 is measuring motor RPM   'Rollout is the number of mm traveled for 1 rotation of the wheel
 
-                                    If Data(RPM2, ACTUAL) > Data(RPM2, MAXIMUM) Then 'check and set maximum values for RPM2, Ratio and rollout
-                                        Data(RPM2, MAXIMUM) = Data(RPM2, ACTUAL)
-                                    End If
-                                    If Data(RPM2, ACTUAL) < Data(RPM2, MINIMUM) Then
-                                        Data(RPM2, MINIMUM) = Data(RPM2, ACTUAL)
-                                    End If
-                                    If Data(RPM2_RATIO, ACTUAL) > Data(RPM2_RATIO, MAXIMUM) Then
-                                        Data(RPM2_RATIO, MAXIMUM) = Data(RPM2_RATIO, ACTUAL)
-                                    End If
-                                    If Data(RPM2_RATIO, ACTUAL) < Data(RPM2_RATIO, MINIMUM) Then
-                                        Data(RPM2_RATIO, MINIMUM) = Data(RPM2_RATIO, ACTUAL)
-                                    End If
-                                    If Data(RPM2_ROLLOUT, ACTUAL) > Data(RPM2_ROLLOUT, MAXIMUM) Then
-                                        Data(RPM2_ROLLOUT, MAXIMUM) = Data(RPM2_ROLLOUT, ACTUAL)
-                                    End If
-                                    If Data(RPM2_ROLLOUT, ACTUAL) < Data(RPM2_ROLLOUT, MINIMUM) Then
-                                        Data(RPM2_ROLLOUT, MINIMUM) = Data(RPM2_ROLLOUT, ACTUAL)
-                                    End If
+                                If Data(RPM2, ACTUAL) > Data(RPM2, MAXIMUM) Then 'check and set maximum values for RPM2, Ratio and rollout
+                                    Data(RPM2, MAXIMUM) = Data(RPM2, ACTUAL)
+                                End If
+                                If Data(RPM2, ACTUAL) < Data(RPM2, MINIMUM) Then
+                                    Data(RPM2, MINIMUM) = Data(RPM2, ACTUAL)
+                                End If
+                                If Data(RPM2_RATIO, ACTUAL) > Data(RPM2_RATIO, MAXIMUM) Then
+                                    Data(RPM2_RATIO, MAXIMUM) = Data(RPM2_RATIO, ACTUAL)
+                                End If
+                                If Data(RPM2_RATIO, ACTUAL) < Data(RPM2_RATIO, MINIMUM) Then
+                                    Data(RPM2_RATIO, MINIMUM) = Data(RPM2_RATIO, ACTUAL)
+                                End If
+                                If Data(RPM2_ROLLOUT, ACTUAL) > Data(RPM2_ROLLOUT, MAXIMUM) Then
+                                    Data(RPM2_ROLLOUT, MAXIMUM) = Data(RPM2_ROLLOUT, ACTUAL)
+                                End If
+                                If Data(RPM2_ROLLOUT, ACTUAL) < Data(RPM2_ROLLOUT, MINIMUM) Then
+                                    Data(RPM2_ROLLOUT, MINIMUM) = Data(RPM2_ROLLOUT, ACTUAL)
                                 End If
                             End If
-                            If (WhichSignal2 = HIGHSIGNAL AndAlso RawWaveData(j + 1) <= HighSignalThreshold2 - 3) Or (WhichSignal2 = LOWSIGNAL AndAlso RawWaveData(j + 1) >= HighSignalThreshold2 + 3) Then
-                                If FoundHighSignal2 = True Then
-                                    Data(CHAN2_PULSEWIDTH, ACTUAL) = k2 * BytesToSeconds * 1000
-                                    k2 = 0
-                                    If Data(CHAN2_PULSEWIDTH, ACTUAL) > Data(CHAN2_PULSEWIDTH, MAXIMUM) Then Data(CHAN2_PULSEWIDTH, MAXIMUM) = Data(CHAN2_PULSEWIDTH, ACTUAL)
-                                    If Data(CHAN2_PULSEWIDTH, ACTUAL) < Data(CHAN2_PULSEWIDTH, MINIMUM) Then Data(CHAN2_PULSEWIDTH, MINIMUM) = Data(CHAN2_PULSEWIDTH, ACTUAL)
-                                    Data(CHAN2_DUTYCYCLE, ACTUAL) = Data(CHAN2_PULSEWIDTH, ACTUAL) * Data(CHAN2_FREQUENCY, ACTUAL) / 10
-                                    If Data(CHAN2_DUTYCYCLE, ACTUAL) > Data(CHAN2_DUTYCYCLE, MAXIMUM) Then Data(CHAN2_DUTYCYCLE, MAXIMUM) = Data(CHAN2_DUTYCYCLE, ACTUAL)
-                                    If Data(CHAN2_DUTYCYCLE, ACTUAL) < Data(CHAN2_DUTYCYCLE, MINIMUM) Then Data(CHAN2_DUTYCYCLE, MINIMUM) = Data(CHAN2_DUTYCYCLE, ACTUAL)
-                                End If
-
-                                FoundHighSignal2 = False
-
-                            End If
-                            LastSignal2 = RawWaveData(j + 1) 'remember the last high signal and the current correction time
                         End If
-                        CurrentSignalXPosition = (CurrentSignalXPosition + SignalXConversion) Mod PicSignalWidth
+                        If (WhichSignal2 = HIGHSIGNAL AndAlso RawWaveData(j + 1) <= HighSignalThreshold2 - 3) Or (WhichSignal2 = LOWSIGNAL AndAlso RawWaveData(j + 1) >= HighSignalThreshold2 + 3) Then
+                            If FoundHighSignal2 = True Then
+                                Data(CHAN2_PULSEWIDTH, ACTUAL) = k2 * BytesToSeconds * 1000
+                                k2 = 0
+                                If Data(CHAN2_PULSEWIDTH, ACTUAL) > Data(CHAN2_PULSEWIDTH, MAXIMUM) Then Data(CHAN2_PULSEWIDTH, MAXIMUM) = Data(CHAN2_PULSEWIDTH, ACTUAL)
+                                If Data(CHAN2_PULSEWIDTH, ACTUAL) < Data(CHAN2_PULSEWIDTH, MINIMUM) Then Data(CHAN2_PULSEWIDTH, MINIMUM) = Data(CHAN2_PULSEWIDTH, ACTUAL)
+                                Data(CHAN2_DUTYCYCLE, ACTUAL) = Data(CHAN2_PULSEWIDTH, ACTUAL) * Data(CHAN2_FREQUENCY, ACTUAL) / 10
+                                If Data(CHAN2_DUTYCYCLE, ACTUAL) > Data(CHAN2_DUTYCYCLE, MAXIMUM) Then Data(CHAN2_DUTYCYCLE, MAXIMUM) = Data(CHAN2_DUTYCYCLE, ACTUAL)
+                                If Data(CHAN2_DUTYCYCLE, ACTUAL) < Data(CHAN2_DUTYCYCLE, MINIMUM) Then Data(CHAN2_DUTYCYCLE, MINIMUM) = Data(CHAN2_DUTYCYCLE, ACTUAL)
+                            End If
+
+                            FoundHighSignal2 = False
+
+                        End If
+                        LastSignal2 = RawWaveData(j + 1) 'remember the last high signal and the current correction time
+                    End If
+                    CurrentSignalXPosition = (CurrentSignalXPosition + SignalXConversion) Mod PicSignalWidth
 
                 Next
 
@@ -2798,7 +2882,7 @@ Public Class Main
             DataAreUsed(PIN05VALUE) = False
         End If
 
-        
+
 
 
         btnResetMaxima_Click(Me, System.EventArgs.Empty)
@@ -2992,7 +3076,7 @@ Public Class Main
                                 End If
                                 Data(TORQUE_WHEEL, ACTUAL) = Data(POWER, ACTUAL) / Data(RPM1_WHEEL, ACTUAL) 'back calculate the torque at the wheel and motor based on the calculated power
                                 Data(TORQUE_MOTOR, ACTUAL) = Data(POWER, ACTUAL) / Data(RPM1_MOTOR, ACTUAL)
-                            
+
                                 If Data(TORQUE_ROLLER, ACTUAL) > Data(TORQUE_ROLLER, MAXIMUM) Then 'set the maximum values for torque
                                     Data(TORQUE_ROLLER, MAXIMUM) = Data(TORQUE_ROLLER, ACTUAL)
                                     Data(TORQUE_WHEEL, MAXIMUM) = Data(TORQUE_WHEEL, ACTUAL)
@@ -3177,7 +3261,7 @@ Public Class Main
                     btnHide.Enabled = True
                     btnShow.Enabled = False
             End Select
-           
+
         End If
     End Sub
     Private Sub LoadInterface()
@@ -3192,24 +3276,36 @@ Public Class Main
                         If TempString = "Label" Then
                             TempString = InterfaceInputFile.ReadLine
                             f.Add(New SimpleDynoSubLabel())
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                             AddHandler f(f.Count - 1).RemoveYourself, AddressOf RemoveForm
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                             AddHandler f(f.Count - 1).SetToMyFormat, AddressOf SetAllFormats
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                             f(f.Count - 1).myType = "Label"
                             f(f.Count - 1).Initialize(f.Count - 1, Data, DataTags, DataUnits, DataUnitTags, DataAreUsed)
                             f.Item(f.Count - 1).CreateFromSerializedData(TempString)
                         ElseIf TempString = "Gauge" Then
                             TempString = InterfaceInputFile.ReadLine
                             f.Add(New SimpleDynoSubGauge())
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                             AddHandler f(f.Count - 1).RemoveYourself, AddressOf RemoveForm
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                             AddHandler f(f.Count - 1).SetToMyFormat, AddressOf SetAllFormats
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                             f(f.Count - 1).myType = "Gauge"
                             f(f.Count - 1).Initialize(f.Count - 1, Data, DataTags, DataUnits, DataUnitTags, DataAreUsed)
                             f.Item(f.Count - 1).CreateFromSerializedData(TempString)
                         ElseIf TempString = "MultiYTimeGraph" Then
                             TempString = InterfaceInputFile.ReadLine
                             f.Add(New SimpleDynoSubMultiYTimeGraph())
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                             AddHandler f(f.Count - 1).RemoveYourself, AddressOf RemoveForm
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                             AddHandler f(f.Count - 1).SetToMyFormat, AddressOf SetAllFormats
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                             f(f.Count - 1).myType = "MultiYTimeGraph"
                             f(f.Count - 1).Initialize(f.Count - 1, Data, DataTags, DataUnits, DataUnitTags, DataAreUsed)
                             f.Item(f.Count - 1).CreateFromSerializedData(TempString)
@@ -3228,8 +3324,12 @@ Public Class Main
                         If TempString = "Label" Then
                             TempString = InterfaceInputFile.ReadLine
                             f.Add(New SimpleDynoSubLabel())
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                             AddHandler f(f.Count - 1).RemoveYourself, AddressOf RemoveForm
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                             AddHandler f(f.Count - 1).SetToMyFormat, AddressOf SetAllFormats
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                             f(f.Count - 1).myType = "Label"
                             f(f.Count - 1).Initialize(f.Count - 1, Data, DataTags, DataUnits, DataUnitTags, DataAreUsed)
                             'This is the point to translate old pointers to new pointers
@@ -3239,16 +3339,24 @@ Public Class Main
                             TempString = InterfaceInputFile.ReadLine
                             Debug.Print(TempString)
                             f.Add(New SimpleDynoSubGauge())
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                             AddHandler f(f.Count - 1).RemoveYourself, AddressOf RemoveForm
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                             AddHandler f(f.Count - 1).SetToMyFormat, AddressOf SetAllFormats
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                             f(f.Count - 1).myType = "Gauge"
                             f(f.Count - 1).Initialize(f.Count - 1, Data, DataTags, DataUnits, DataUnitTags, DataAreUsed)
                             f.Item(f.Count - 1).CreateFromSerializedData(InterfaceConvert_63_toCurrent(TempString))
                         ElseIf TempString = "MultiYTimeGraph" Then
                             TempString = InterfaceInputFile.ReadLine
                             f.Add(New SimpleDynoSubMultiYTimeGraph())
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                             AddHandler f(f.Count - 1).RemoveYourself, AddressOf RemoveForm
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                             AddHandler f(f.Count - 1).SetToMyFormat, AddressOf SetAllFormats
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                             f(f.Count - 1).myType = "MultiYTimeGraph"
                             f(f.Count - 1).Initialize(f.Count - 1, Data, DataTags, DataUnits, DataUnitTags, DataAreUsed)
                             f.Item(f.Count - 1).CreateFromSerializedData(InterfaceConvert_63_toCurrent(TempString))
@@ -3269,8 +3377,8 @@ Public Class Main
                     InterfaceInputFile.Close()
                     InterfaceInputFile.Dispose()
             End Select
-           
-            
+
+
 
 
         End If
@@ -3412,8 +3520,12 @@ Public Class Main
         btnClose.Enabled = True
         btnHide.Enabled = True
         f.Add(New SimpleDynoSubLabel())
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
         AddHandler f(f.Count - 1).RemoveYourself, AddressOf RemoveForm
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
         AddHandler f(f.Count - 1).SetToMyFormat, AddressOf SetAllFormats
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
         f(f.Count - 1).Initialize(f.Count - 1, Data, DataTags, DataUnits, DataUnitTags, DataAreUsed)
     End Sub
     Private Sub btnNewGauge_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNewGauge.Click
@@ -3423,8 +3535,12 @@ Public Class Main
         btnClose.Enabled = True
         btnHide.Enabled = True
         f.Add(New SimpleDynoSubGauge())
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
         AddHandler f(f.Count - 1).RemoveYourself, AddressOf RemoveForm
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
         AddHandler f(f.Count - 1).SetToMyFormat, AddressOf SetAllFormats
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
         f(f.Count - 1).Initialize(f.Count - 1, Data, DataTags, DataUnits, DataUnitTags, DataAreUsed)
     End Sub
     Private Sub btnMultiYTime_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMultiYTime.Click
@@ -3433,13 +3549,22 @@ Public Class Main
         btnClose.Enabled = True
         btnHide.Enabled = True
         f.Add(New SimpleDynoSubMultiYTimeGraph())
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
         AddHandler f(f.Count - 1).RemoveYourself, AddressOf RemoveForm
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
         AddHandler f(f.Count - 1).SetToMyFormat, AddressOf SetAllFormats
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
         f(f.Count - 1).Initialize(f.Count - 1, Data, DataTags, DataUnits, DataUnitTags, DataAreUsed)
     End Sub
     Private Sub btnResetSDForm_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         ResetAllYTimeGraphs()
     End Sub
+
+    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
+
+    End Sub
+
     Private Sub btnClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClose.Click
         'Remove interface if it is closed down
         Do Until f.Count = 0
@@ -3570,7 +3695,7 @@ Public Class Main
 #End If
 #End Region
 
-   
+
 End Class
 #Region "DoubleBufferPanel Class"
 Public Class DoubleBufferPanel
@@ -3581,5 +3706,5 @@ Public Class DoubleBufferPanel
         UpdateStyles()
     End Sub
 End Class
-#End Region 
+#End Region
 

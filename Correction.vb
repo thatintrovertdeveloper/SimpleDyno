@@ -46,7 +46,7 @@
     End Sub
 
     Private Sub btnLoadCoastDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnLoadCoastDown.Click
-   
+
         RunDownOpenFileDialog = New OpenFileDialog
 
         With RunDownOpenFileDialog
@@ -102,5 +102,5 @@
 
     End Sub
 
-   
+
 End Class

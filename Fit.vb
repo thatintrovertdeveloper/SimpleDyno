@@ -403,7 +403,9 @@ Public Class Fit
     End Sub
     Sub FitRPMData()
 
+#Disable Warning BC42024 ' Unused local variable
         Dim yoffset As Double, xoffset As Double, count As Integer, count2 As Integer, RawRPM1Max As Double
+#Enable Warning BC42024 ' Unused local variable
 
         ReDim y(Main.DataPoints)
         ReDim x(Main.DataPoints)
@@ -509,7 +511,9 @@ Public Class Fit
 
         Dim Count As Integer, Count2 As Integer, RawRPM1Max As Double
 
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
         If Main.frmCorrection.blnUsingLoadedRunDownFile = False Then
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
 
             lblUsingRunDownFile.Text = "No Coast Down File Loaded"
 
@@ -626,8 +630,14 @@ Public Class Fit
         Else
             'read in the selected coast down file
             Dim CoastDownInputStream As StreamReader, temp As String, tempsplit() As String, NumberOfPoints As Integer
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
             CoastDownInputStream = New StreamReader(Main.frmCorrection.RunDownOpenFileDialog.FileName)
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
             lblUsingRunDownFile.Text = Main.frmCorrection.RunDownOpenFileDialog.FileName.Substring(Main.frmCorrection.RunDownOpenFileDialog.FileName.LastIndexOf("\") + 1)
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
             With CoastDownInputStream
                 Do
                     temp = .ReadLine
@@ -803,8 +813,12 @@ Public Class Fit
             .WriteLine("Run_Spike_Removal_Threshold: " & PowerRunSpikeLevel.ToString)
             .WriteLine("Curve_Fit_Model: " & cmbWhichFit.SelectedItem.ToString)
             .WriteLine("Coast_Down?_Roller?_Wheel?_Drivetrain?: " & rdoRunDown.Enabled.ToString & " " & Main.frmCorrection.rdoFreeRoller.Checked.ToString & " " & Main.frmCorrection.rdoRollerAndWheel.Checked.ToString & " " & Main.frmCorrection.rdoRollerAndDrivetrain.Checked.ToString)
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
             If Main.frmCorrection.blnUsingLoadedRunDownFile = True Then
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                 .WriteLine("Coast_Down_File_Loaded: " & Main.frmCorrection.RunDownOpenFileDialog.FileName)
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
             Else
                 .WriteLine("Coast_Down_Fit_Model: " & cmbWhichRDFit.SelectedItem.ToString)
             End If
@@ -1104,7 +1118,9 @@ Public Class Fit
         Do While k < kmax And niter < itmax And Main.StopFitting = False 'VL. 30/10/2004
             prgFit.Value = k + niter
             Application.DoEvents()
+#Disable Warning BC42030 ' Variable is passed by reference before it has been assigned a value
             Call CalculateMcoef(x, y, c, Mcoef, delta, WhichCurve)
+#Enable Warning BC42030 ' Variable is passed by reference before it has been assigned a value
             Call SolveLS(Mcoef, Diffc, det)
             For i = 1 To UBound(c)
                 tpc(i) = c(i) + Diffc(i)

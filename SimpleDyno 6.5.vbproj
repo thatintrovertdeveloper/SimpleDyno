@@ -10,7 +10,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ApplicationIcon>SD.ico</ApplicationIcon>
     <AssemblyKeyContainerName />
-    <AssemblyName>SimpleDyno</AssemblyName>
+    <AssemblyName>SimpleDyno by Melo Schooter Works</AssemblyName>
     <AssemblyOriginatorKeyFile />
     <AssemblyOriginatorKeyMode>None</AssemblyOriginatorKeyMode>
     <DefaultClientScript>JScript</DefaultClientScript>
@@ -47,7 +47,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>SimpleDyno.xml</DocumentationFile>
+    <DocumentationFile>SimpleDyno by Melo Schooter Works.xml</DocumentationFile>
     <BaseAddress>285212672</BaseAddress>
     <ConfigurationOverrideFile />
     <DefineConstants />
@@ -67,7 +67,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>SimpleDyno.xml</DocumentationFile>
+    <DocumentationFile>SimpleDyno by Melo Schooter Works.xml</DocumentationFile>
     <BaseAddress>285212672</BaseAddress>
     <ConfigurationOverrideFile />
     <DefineConstants />
@@ -132,10 +132,12 @@
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Drawing">
       <Name>System.Drawing</Name>
     </Reference>
     <Reference Include="System.Management" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms">
       <Name>System.Windows.Forms</Name>
     </Reference>
@@ -204,6 +206,7 @@
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -340,6 +343,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\bg.bmp" />
+    <None Include="Resources\bg-fire-3.png" />
+    <None Include="Resources\Melo.png" />
+    <None Include="Resources\SD.ico" />
     <Content Include="Test and Release Procedures.txt" />
     <Content Include="ToDo.txt" />
     <None Include="Resources\Image1.bmp" />

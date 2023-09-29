@@ -1,10 +1,4 @@
-﻿Imports System
-Imports System.ComponentModel
-Imports System.Drawing
-Imports System.Windows.Forms
-Imports System.Drawing.Drawing2D
-
-'Friend Enum SerialParameters
+﻿'Friend Enum SerialParameters
 '    'Enumerate the basic components of each display object 
 '    Left = 0
 '    Top
@@ -55,7 +49,7 @@ Public MustInherit Class SimpleDynoSubForm
 
     Friend timer1 As System.Windows.Forms.Timer
     Friend TimerTiggered As Boolean
-    
+
     Friend Y_Number_Allowed As Integer
     Friend XY_Selected As Integer
 
@@ -100,12 +94,21 @@ Public MustInherit Class SimpleDynoSubForm
     MustOverride Function ControlSpecificSerializationData() As String
     MustOverride Sub ControlSpecficCreateFromSerializedData(ByVal Sent As String())
 
-    
+
     Public Sub New()
         'Nothing Here
     End Sub
     Private Sub InitializeComponent()
-        'This code seems to be inserted by the designer - can be removed
+        Me.SuspendLayout()
+        '
+        'SimpleDynoSubForm
+        '
+        Me.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.BackgroundImage = Global.SimpleDyno.My.Resources.Resources.RollerMass
+        Me.ClientSize = New System.Drawing.Size(284, 261)
+        Me.Name = "SimpleDynoSubForm"
+        Me.ResumeLayout(False)
+
     End Sub
     Friend Sub Initialize(ByVal WhichNumberAmI As Integer, ByRef SentData(,) As Double, ByRef SentDataNames() As String, ByRef SentUnits(,) As Double, ByRef SentUnitsNames() As String, ByRef SentDataAreUsed() As Boolean) ' ADD CONSTRUCTION CALLS HERE)
 
@@ -202,7 +205,7 @@ Public MustInherit Class SimpleDynoSubForm
                 TempReport += Y_Maximum(Count) & Splitter
                 TempReport += IsThisYSelected(Count) & Splitter
             Next
-           
+
         End With
         TempReport = TempReport & ControlSpecificSerializationData()
         Return TempReport
@@ -243,7 +246,7 @@ Public MustInherit Class SimpleDynoSubForm
             IsThisYSelected(Count) = CBool(Parameters(21 + (Count - 1) * 7))
             Y_DataFont(Count) = New Font(Parameters(14), 5)
         Next
-      
+
         Me.Location = NewLocation
         Me.Size = NewSize
 
@@ -251,7 +254,7 @@ Public MustInherit Class SimpleDynoSubForm
 
         SDForm_Resize(Me, System.EventArgs.Empty)
 
-        DrawToBuffer(grafx.Graphics)
+        DrawToBuffer(Grafx.Graphics)
         Me.Refresh()
     End Sub
     Public Sub HideYourSelf()
@@ -382,7 +385,7 @@ Public MustInherit Class SimpleDynoSubForm
         Dim Where As New System.Drawing.Point
         Where.X = Me.Right
         Where.Y = Me.Top
-        contextmnu.Show(Where)
+        Contextmnu.Show(Where)
     End Sub
     Overridable Sub CheckText(ByVal objsender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs)
         Dim sender As ToolStripTextBox = DirectCast(objsender, ToolStripTextBox)
@@ -490,7 +493,9 @@ Public MustInherit Class SimpleDynoSubForm
         With Me
             'GetMyFormat = .Location.X & Splitter & .Location.Y & Splitter & .Height & Splitter & .Width & Splitter 'dimensions and posisition of window
             'GetMyFormat += myConfiguration & Splitter & Y_Number_Allowed & Splitter & timer1.Interval & Splitter   'specific configuration and number of Y_datasets
+#Disable Warning BC42104 ' Variable is used before it has been assigned a value
             GetMyFormat += ColorTranslator.ToHtml(BackClr) & Splitter & ColorTranslator.ToHtml(AxisClr) & Splitter 'basic colors
+#Enable Warning BC42104 ' Variable is used before it has been assigned a value
             'GetMyFormat += X_PrimaryPointer & Splitter & X_MinCurMaxPointer & Splitter & X_UnitPointer & Splitter  'X data pointer
             'GetMyFormat += X_Minimum & Splitter & X_Maximum & Splitter                                             'X min and max
             GetMyFormat += X_AxisFont.Name & Splitter
@@ -547,7 +552,7 @@ Public MustInherit Class SimpleDynoSubForm
         DrawToBuffer(Grafx.Graphics)
         Me.Refresh()
     End Sub
-    
+
     Friend Function ConvertedToRadians(ByVal Sent As Double) As Double
         Return Sent * Math.PI / 180
     End Function

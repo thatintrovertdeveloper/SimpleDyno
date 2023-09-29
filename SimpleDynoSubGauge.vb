@@ -47,20 +47,21 @@ Public Class SimpleDynoSubGauge
         XY_Selected = 1
 
         '///////
-        ''CHECK - PULL TIMER FROM RELEASE
+        '/CHECK -PULL TIMER FROM RELEASE
         'TestTimer = New Timer
         'TestTimer.Interval = 20
         'TestTimer.Stop()
         ''//////
         'AddHandler Me.TestTimer.Tick, AddressOf testtick
 
+
         myConfiguration = "270 270 1"
         Angle = 270
         PointAngle = 270 'CHECK - not been used now - forward compatability item
         StartAngle = PointAngle - Angle / 2
         SweepClockwise = 1
-        NumberOfMajorTicks = 5
-        NumberOfMinorTicks = 21
+        NumberOfMajorTicks = 21
+        NumberOfMinorTicks = (20 * 9) + 1
 
         ReDim MajorTickOuter(NumberOfMajorTicks)
         ReDim MajorTickInner(NumberOfMajorTicks)
@@ -75,6 +76,8 @@ Public Class SimpleDynoSubGauge
         Dim Count As Integer
         Dim MajorTickLength As Double, MinorTickLength As Double
         Dim Increment As Double
+
+        'Me.BackgroundImage = Global.SimpleDyno.My.Resources.Resources.RollerMass
 
         With myGaugeSurface
             .Width = CInt(Me.ClientSize.Width * 0.9) 'padding 1% each side
@@ -156,11 +159,11 @@ Public Class SimpleDynoSubGauge
                 MajorTickInner(Count).X = CInt(Center.X + (.Width - MajorTickLength) / 2 * Math.Cos(ConvertedToRadians(StartAngle + (Angle / (NumberOfMajorTicks - 1) * (Count - 1)))))
                 MajorTickInner(Count).Y = CInt(Center.Y + (.Height - MajorTickLength) / 2 * Math.Sin(ConvertedToRadians(StartAngle + (Angle / (NumberOfMajorTicks - 1) * (Count - 1)))))
                 If SweepClockwise = 1 Then
-                    TickLabels(Count) = NewCustomFormat(Y_Minimum(Y_Number_Allowed) + (Y_Maximum(Y_Number_Allowed) - Y_Minimum(Y_Number_Allowed)) / (NumberOfMajorTicks - 1) * (Count - 1))
+                    TickLabels(Count) = NewCustomFormat(Int(Y_Minimum(Y_Number_Allowed) + (Y_Maximum(Y_Number_Allowed) - Y_Minimum(Y_Number_Allowed)) / (NumberOfMajorTicks - 1) * (Count - 1)))
                 Else
-                    TickLabels(Count) = NewCustomFormat(Y_Maximum(Y_Number_Allowed) - (Y_Maximum(Y_Number_Allowed) - Y_Minimum(Y_Number_Allowed)) / (NumberOfMajorTicks - 1) * (Count - 1))
+                    TickLabels(Count) = NewCustomFormat(Int(Y_Maximum(Y_Number_Allowed) - (Y_Maximum(Y_Number_Allowed) - Y_Minimum(Y_Number_Allowed)) / (NumberOfMajorTicks - 1) * (Count - 1)))
                 End If
-Next
+            Next
             For Count = 1 To NumberOfMinorTicks
                 MinorTickOuter(Count).X = CInt(Center.X + .Width / 2 * Math.Cos(ConvertedToRadians(StartAngle + (Angle / (NumberOfMinorTicks - 1) * (Count - 1)))))
                 MinorTickOuter(Count).Y = CInt(Center.Y + .Height / 2 * Math.Sin(ConvertedToRadians(StartAngle + (Angle / (NumberOfMinorTicks - 1) * (Count - 1)))))
@@ -194,12 +197,12 @@ Next
                 'This option based on centering between needle centre and tick 3
                 TickLabelPositions(0).Y = CInt(Center.Y + (MajorTickInner(3).Y - Center.Y) / 2 - TickLabelHeights(0) / 2)
                 TickLabelPositions(0).X = CInt(Center.X + (MajorTickInner(3).X - Center.X) / 2 - TickLabelWidths(0) / 2)
-              
+
                 For o As Integer = 0 To NumberOfMajorTicks
                     For i As Integer = 0 To NumberOfMajorTicks
-                        If TickLabelPositions(o).X < TickLabelPositions(i).X + TickLabelWidths(i) AndAlso _
-                            TickLabelPositions(o).X + TickLabelWidths(o) > TickLabelPositions(i).X AndAlso _
-                            TickLabelPositions(o).Y < TickLabelPositions(i).Y + TickLabelHeights(i) AndAlso _
+                        If TickLabelPositions(o).X < TickLabelPositions(i).X + TickLabelWidths(i) AndAlso
+                            TickLabelPositions(o).X + TickLabelWidths(o) > TickLabelPositions(i).X AndAlso
+                            TickLabelPositions(o).Y < TickLabelPositions(i).Y + TickLabelHeights(i) AndAlso
                             TickLabelPositions(o).Y + TickLabelHeights(o) > TickLabelPositions(i).Y Then
                             'No overlap
                             Score += 1
@@ -208,7 +211,7 @@ Next
                         End If
                     Next
                 Next
-                
+
             Loop Until Score > NumberOfMajorTicks + 1
             'Need to check that the end ticks (1 and 5) are not outside the Gaugesurface area
             If TickLabelPositions(1).X < Me.ClientRectangle.X Then TickLabelPositions(1).X = Me.ClientRectangle.X
@@ -228,7 +231,7 @@ Next
 
     End Sub
     Overrides Sub DrawToBuffer(ByVal g As Graphics) 'WHY SEND A G AS AN ARGUMENT? - REMOVE
-        
+
         Dim TickCount As Integer
         If Y_Result(XY_Selected) > Y_Maximum(Y_Number_Allowed) Then Y_Result(XY_Selected) = Y_Maximum(Y_Number_Allowed)
         If Y_Result(XY_Selected) < Y_Minimum(Y_Number_Allowed) Then Y_Result(XY_Selected) = Y_Minimum(Y_Number_Allowed)
@@ -243,7 +246,7 @@ Next
             .DrawArc(AxisPen, myDialRectangle, StartAngle, Angle)
             For TickCount = 1 To NumberOfMajorTicks
                 .DrawLine(AxisPen, MajorTickOuter(TickCount), MajorTickInner(TickCount))
-                .DrawString(TickLabels(TickCount), Y_AxisFont, AxisBrush, TickLabelPositions(TickCount))
+                .DrawString(CStr(Math.Truncate(Decimal.Parse(TickLabels(TickCount)))), Y_AxisFont, AxisBrush, TickLabelPositions(TickCount))
             Next
             For TickCount = 1 To NumberOfMinorTicks
                 .DrawLine(AxisPen, MinorTickOuter(TickCount), MinorTickInner(TickCount))
@@ -275,7 +278,7 @@ Next
         Dim str1 As String
         Dim str2 As String()
         Dim str3 As String()
-       
+
 
         'str1 = "Configuration"
         'str2 = {"90 deg", "180 deg", "270 deg"}
@@ -335,7 +338,9 @@ Next
     End Sub
     Public Overrides Function ControlSpecificSerializationData() As String
 
+#Disable Warning BC42105 ' Function doesn't return a value on all code paths
     End Function
+#Enable Warning BC42105 ' Function doesn't return a value on all code paths
     Public Overrides Sub ControlSpecficCreateFromSerializedData(ByVal Sent As String())
         'Original version was the following line, but misses the point direction.  Need to check for pre-6.5 configuration string
         'Angle = CSng(Split(myConfiguration, " ")(0))

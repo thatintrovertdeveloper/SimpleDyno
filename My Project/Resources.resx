@@ -124,6 +124,9 @@
   <data name="AxleDiameter" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\AxleDiameter.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="bg_fire_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bg-fire-3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="CarMass" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\CarMass.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -150,6 +153,9 @@
   </data>
   <data name="GearRatio" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\GearRatio.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Melo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Melo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="RollerDiameter" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\RollerDiameter.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
